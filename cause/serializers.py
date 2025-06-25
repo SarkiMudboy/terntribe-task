@@ -1,5 +1,5 @@
 from rest_framework import serializers
-
+from rest_framework.validators import UniqueValidator
 from .models import Cause, Donation
 
 
@@ -7,6 +7,10 @@ class CauseSerializer(serializers.ModelSerializer):
 
     image_url = serializers.URLField(
         max_length=2000, min_length=None, allow_blank=False
+    )
+    title = serializers.CharField(
+        max_length=2000,
+        validators=[UniqueValidator(queryset=Cause.objects.all())],
     )
 
     class Meta:
@@ -17,7 +21,6 @@ class CauseSerializer(serializers.ModelSerializer):
 
 class ContributionSerializer(serializers.ModelSerializer):
 
-    # cause = serializers.PrimaryKeyRelatedField(queryset=Cause.objects.all())
     email = serializers.EmailField()
     amount = serializers.DecimalField(
         coerce_to_string=False, max_digits=4, decimal_places=2

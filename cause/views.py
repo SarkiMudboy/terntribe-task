@@ -21,7 +21,6 @@ class CauseView(viewsets.ModelViewSet):
     lookup_field = "id"
 
     def get_object(self) -> Cause:
-        print()
         try:
             return self.get_queryset().get(
                 id=self.kwargs.get(self.lookup_field)
