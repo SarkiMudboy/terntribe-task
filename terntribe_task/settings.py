@@ -76,7 +76,12 @@ WSGI_APPLICATION = "terntribe_task.wsgi.application"
 
 
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-if os.getenv("USE_POSTGRES"):
+use_postgres = os.getenv("USE_POSTGRES", "false").lower() in (
+    "1",
+    "true",
+    "yes",
+)
+if use_postgres:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql_psycopg2",
@@ -87,7 +92,6 @@ if os.getenv("USE_POSTGRES"):
             "PORT": os.getenv("DB_PORT"),
         }
     }
-
 else:
     # Database: SQL
     DATABASES = {
